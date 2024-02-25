@@ -1,0 +1,42 @@
+options {static = true;}
+
+PARSER_BEGIN(ExprJava2Clojure)
+package javacc_java2clojure_expr;
+public class ExprJava2Clojure
+{
+	public static void main(String args []) throws ParseException
+	{
+		ExprJava2Clojure parser = new ExprJava2Clojure (System.in);
+		System.out.println (parser.START ());
+	}
+}
+PARSER_END(ExprJava2Clojure)
+
+SKIP : {" " | "\r" | "\t"}
+
+TOKEN : {< PLUS : "+" > | < MINUS : "-" > | < TIMES : "*" > | < DIVIDEDBY : "/" >}
+TOKEN : {< LPAREN : "(" > | < RPAREN : ")" > | < ENTER : "\n" >}
+
+TOKEN : {
+	  < CONSTANT : (< DIGIT >)+ > | < #DIGIT : [ "0"-"9" ] > | < #LETTER : [ "a" - "z" ][ "A" - "Z" ] >
+	| < IDENTIFIER : < LETTER > (< LETTER > | < DIGIT >	)* >
+}
+
+String TERMINAL () : {Token terminal = new Token ();} {
+	terminal = < IDENTIFIER > | terminal = < CONSTANT > {return terminal.toString();}
+}
+String START () : {String code = "";} {
+	code = EXPR () {return code;}
+}
+String EXPR () : {String expr1 = "", expr2 = "", code = "";} {
+	(		expr1 = TERMINAL () {code += expr1;}
+		| < LPAREN > expr1 = EXPR () < RPAREN > {code = "(" + expr1 + ")";}
+	)
+	(
+		< PLUS > expr2 = EXPR () {code = "+ " + code + " " + expr2 + "";}
+		| < MINUS > expr2 = EXPR () {code = "- " + code + " " + expr2 + "";}
+		| < TIMES > expr2 = EXPR () {code = "* " + code + " " + expr2 + "";}
+		| < DIVIDEDBY > expr2 = EXPR () {code = "/ " + code + " " + expr2 + "";}
+	)*
+	{return code;}
+}

@@ -1,0 +1,51 @@
+//AddComplex.jj
+options {
+	STATIC = false;
+}
+PARSER_BEGIN(AddComplex)
+	package javacc_addcomplex;
+	public class AddComplex {
+	public static void main (String args[]) throws ParseException {
+		AddComplex compiler = new AddComplex(System.in);
+		System.out.println("Complex Numbers Adder");
+		compiler.start();
+	}
+}
+PARSER_END(AddComplex)
+
+SKIP: {" " | "\t"}
+TOKEN: { < ENTER: "\r" "\n" >}
+TOKEN: { < IMAGINARY : "i" >}
+TOKEN: { < PLUS : "+" >}
+TOKEN: { < #DIGIT: ["0" - "9"] > }
+TOKEN: { < #DOT: "." >}
+TOKEN: { < NUMBER: (<DIGIT>)+ (<DOT> (<DIGIT>)+)? > }
+TOKEN: { <PRINT: "print"> }
+
+Token coeficient () :
+{
+	Token num;
+}
+{
+	num = <NUMBER> {
+		return num;
+	}
+}
+void start () :
+{
+	Token realpart;
+	Token imaginarypart;
+	double counterreal = 0.0;
+	double counterimaginary = 0.0;
+}
+{
+	(realpart = coeficient() <PLUS> imaginarypart = coeficient() <IMAGINARY> <ENTER>
+	{
+		counterreal += Double.parseDouble(realpart.image);
+		counterimaginary += Double.parseDouble (imaginarypart.image);
+	}
+	)+
+	<PRINT> {
+		System.out.println("Soma: " + counterreal + " + " + counterimaginary + " i");
+	}
+}
