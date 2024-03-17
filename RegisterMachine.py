@@ -56,13 +56,12 @@ MOVE = lambda r, s : CLEAR (s) + ["D +" + str (r), "J +3", "I +" + str (s), "J -
 DIRTYADD = lambda r1, r2, r3 : ["D +" + str (r1), "J +4", "I +" + str (r2), "I +" + str (r3), "J -4"]
 
 #COPY MACHINE:
-
 COPY = lambda r, middle, s : CLEAR (s) + MOVE (r, middle) + DIRTYADD (middle, r, s)
 
 #ADD MACHINE:
-
 ADD = lambda r1, r2, r0 : CLEAR (r0) + MOVE (r1, 3) + DIRTYADD (3, r1, r0) + MOVE (r2, 3) + DIRTYADD (3, r2, r0)
 
+#MULTIPLY MACHINE
 MULTIPLYAUX = lambda r1, r2, r0 : ["D +" + str (r2), "J +50"] + ADD (r1, 5, r0) + COPY (r0, 7, 5)
 MULTIPLYAUX2 = lambda r1, r2, r0, multiplyaux : multiplyaux + ["J -" + str (len (multiplyaux))]
 MULTIPLY = lambda r1, r2, r0 : MULTIPLYAUX2 (r1, r2, r0, MULTIPLYAUX (r1, r2, r0))
