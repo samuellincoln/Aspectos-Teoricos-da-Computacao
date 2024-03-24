@@ -1,6 +1,6 @@
 //AddComplex.jj
 
-//Exemplo que criei no JavaCC para uma seção do meu TCC/Monografia de Conclusao de Curso, em 2008
+//Exemplo que criei no JavaCC para uma secao do meu TCC/Monografia de Conclusao de Curso, em 2008
 
 options {
 	STATIC = false;
