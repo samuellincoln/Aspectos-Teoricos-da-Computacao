@@ -1,4 +1,7 @@
 //AddComplex.jj
+
+//Exemplo que criei no JavaCC para uma seção do meu TCC/Monografia de Conclusão de Curso, em 2008
+
 options {
 	STATIC = false;
 }
